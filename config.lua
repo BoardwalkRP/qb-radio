@@ -1,45 +1,100 @@
 Config = {}
 
 Config.RestrictedChannels = {
-    [1] = {
+    [1] = { -- POLICE
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        ranger = true,
+        firefighter = true,
+        cid = true,
     },
-    [2] = {
+    [2] = { -- AMBULANCE
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        ranger = true,
+        firefighter = true,
+        cid = true,
     },
-    [3] = {
+    [3] = { -- DOC
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        firefighter = true,
+        cid = true,
     },
-    [4] = {
+    [4] = { -- RANGERS
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        ranger = true,
+        firefighter = true,
+        cid = true,
     },
-    [5] = {
+    [5] = { -- LEGAL
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        ranger = true,
+        judge = true,
+        firefighter = true,
+        cid = true,
     },
-    [6] = {
+    [6] = { -- FIRE
         police = true,
-        ambulance = true
+        policeacademy = true,
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        ranger = true,
+        firefighter = true,
+        cid = true,
     },
     [7] = {
         police = true,
-        ambulance = true
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        cid = true,
     },
     [8] = {
         police = true,
-        ambulance = true
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        cid = true,
     },
     [9] = {
         police = true,
-        ambulance = true
+        bcso = true,
+        sahp = true,
+        ambulance = true,
+        prison = true,
+        cid = true,
     },
     [10] = {
-        police = true,
-        ambulance = true
+        completeauto = true,
+        mechanic = true,
+        hayes = true,
+        lscustoms = true,
     }
 }
 
