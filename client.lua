@@ -29,18 +29,25 @@ local function SplitStr(inputstr, sep)
 end
 
 local function connecttoradio(channel)
-    RadioChannel = channel
     if onRadio then
         exports["pma-voice"]:setRadioChannel(0)
     else
         onRadio = true
         exports["pma-voice"]:setVoiceProperty("radioEnabled", true)
     end
-    exports["pma-voice"]:setRadioChannel(channel)
-    if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
-        QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. ' MHz'}), 'success')
+
+    if not Config.RestrictedChannels[math.floor(channel)] or (Config.RestrictedChannels[math.floor(channel)][PlayerData.job.name] and PlayerData.job.onduty) then
+        RadioChannel = channel
+        exports["pma-voice"]:setRadioChannel(channel)
+        if SplitStr(tostring(channel), ".")[2] ~= nil and SplitStr(tostring(channel), ".")[2] ~= "" then
+            QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. ' MHz'}), 'success')
+        else
+            QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. '.00 MHz'}), 'success')
+        end
+        return true
     else
-        QBCore.Functions.Notify(Lang:t('joined_to_radio', {channel = channel .. '.00 MHz'}), 'success')
+        QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
+        return false
     end
 end
 
@@ -106,11 +113,7 @@ end
 local function adjustChannel(increment)
     if not onRadio then return end
     local newChannel = RadioChannel + increment
-    if newChannel >= 1 then
-        connecttoradio(newChannel)
-        SendNUIMessage({type = "setChannel", channel = newChannel})
-        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-    end
+    if newChannel >= 1 and connecttoradio(newChannel) then SendNUIMessage({type = "setChannel", channel = newChannel}) end
 end
 
 --Commands & Keybinds
@@ -173,15 +176,7 @@ RegisterNUICallback('joinRadio', function(data, cb)
     if rchannel ~= nil then
         if rchannel <= Config.MaxFrequency and rchannel ~= 0 then
             if rchannel ~= RadioChannel then
-                if Config.RestrictedChannels[math.floor(rchannel)] ~= nil then
-                    if Config.RestrictedChannels[math.floor(rchannel)][PlayerData.job.name] and PlayerData.job.onduty then
-                        connecttoradio(rchannel)
-                    else
-                        QBCore.Functions.Notify(Lang:t('restricted_channel_error'), 'error')
-                    end
-                else
-                    connecttoradio(rchannel)
-                end
+                connecttoradio(rchannel)
             else
                 QBCore.Functions.Notify(Lang:t('you_on_radio') , 'error')
             end
