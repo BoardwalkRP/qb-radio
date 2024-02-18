@@ -7,6 +7,10 @@ $(function() {
         if (event.data.type == "close") {
             QBRadio.SlideDown()
         }
+
+        if (event.data.type == "setChannel") {
+            $('#channel').val(event.data.channel);
+        }
     });
 
     document.onkeyup = function (data) {

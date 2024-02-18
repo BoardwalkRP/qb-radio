@@ -103,6 +103,28 @@ local function DoRadioCheck(PlayerItems)
     hasRadio = _hasRadio
 end
 
+local function adjustChannel(increment)
+    if not onRadio then return end
+    local newChannel = RadioChannel + increment
+    if newChannel >= 1 then
+        connecttoradio(newChannel)
+        SendNUIMessage({type = "setChannel", channel = newChannel})
+        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+    end
+end
+
+--Commands & Keybinds
+RegisterCommand('radioup', function()
+    adjustChannel(0.1)
+end)
+
+RegisterCommand('radiodown', function()
+    adjustChannel(-0.1)
+end)
+
+RegisterKeyMapping('radioup', 'Radio: Increase channel by 0.1', 'keyboard', 'SEMICOLON')
+RegisterKeyMapping('radiodown', 'Radio: Decrease channel by 0.1', 'keyboard', 'APOSTROPHE')
+
 --Exports
 exports("IsRadioOn", IsRadioOn)
 
@@ -204,20 +226,13 @@ RegisterNUICallback("volumeDown", function(_, cb)
 end)
 
 RegisterNUICallback("increaseradiochannel", function(_, cb)
-    local newChannel = RadioChannel + 1
-    connecttoradio(newChannel)
-    QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
+    adjustChannel(1)
     cb("ok")
 end)
 
 RegisterNUICallback("decreaseradiochannel", function(_, cb)
-    if not onRadio then return end
-    local newChannel = RadioChannel - 1
-    if newChannel >= 1 then
-        connecttoradio(newChannel)
-        QBCore.Functions.Notify(Lang:t("increase_decrease_radio_channel", {value = newChannel}), "success")
-        cb("ok")
-    end
+    adjustChannel(-1)
+    cb("ok")
 end)
 
 RegisterNUICallback('poweredOff', function(_, cb)
